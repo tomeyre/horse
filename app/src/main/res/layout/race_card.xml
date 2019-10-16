@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/raceCard"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    app:cardCornerRadius="5dp"
+    android:layout_marginTop="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/horse"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/age"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/horse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/sex"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/lastRan"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/rating"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/lastRan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/owner"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/trainer"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/owner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/jockey"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/trainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/odds"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/jockey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/myScore"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/odds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/expectedPosition"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/myScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/position"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_below="@+id/expectedPosition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
