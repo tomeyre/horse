@@ -1,7 +1,9 @@
 package com.example.horseracing.asyncTasks.horse;
 
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 
+import com.example.horseracing.activities.horse.ChancesActivity;
 import com.example.horseracing.activities.horse.RaceActivity;
 import com.example.horseracing.data.horse.Horse;
 import com.example.horseracing.data.horse.Jockey;
@@ -13,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RaceParticipantTask extends AsyncTask<String, String, String> {
 
@@ -20,13 +23,15 @@ public class RaceParticipantTask extends AsyncTask<String, String, String> {
 
     private Integer id;
     private ArrayList<RaceParticipant> raceParticipants;
-    private RaceActivity activity;
+    private AppCompatActivity activity;
+    private Date dateOfRace;
 
 
-    public RaceParticipantTask(Integer id, RaceActivity activity){
+    public RaceParticipantTask(Integer id, AppCompatActivity activity, Date date){
         this.id = id;
         raceParticipants = new ArrayList<>();
         this.activity = activity;
+        this.dateOfRace = date;
     }
 
     @Override
@@ -102,6 +107,11 @@ public class RaceParticipantTask extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result){
-        activity.checkAllHorseResults(raceParticipants);
+        if(activity instanceof ChancesActivity) {
+            ((ChancesActivity) activity).checkAllHorseResults(raceParticipants, dateOfRace, id);
+        }
+        if(activity instanceof RaceActivity) {
+            ((RaceActivity) activity).checkAllHorseResults(raceParticipants);
+        }
     }
 }

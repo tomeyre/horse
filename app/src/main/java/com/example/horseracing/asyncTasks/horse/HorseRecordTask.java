@@ -1,7 +1,9 @@
 package com.example.horseracing.asyncTasks.horse;
 
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 
+import com.example.horseracing.activities.horse.ChancesActivity;
 import com.example.horseracing.activities.horse.RaceActivity;
 import com.example.horseracing.data.horse.DateOfSelectedRace;
 import com.example.horseracing.data.horse.Record;
@@ -21,14 +23,18 @@ public class HorseRecordTask extends AsyncTask<String, String, String> {
 
     private Integer id;
     private ArrayList<Record> records;
-    private RaceActivity activity;
+    private AppCompatActivity activity;
     private DateOfSelectedRace dateOfSelectedRace = DateOfSelectedRace.getInstance();
+    private Date dateOfRace;
+    private Integer raceId;
 
 
-    public HorseRecordTask(Integer id, RaceActivity activity){
+    public HorseRecordTask(Integer id, AppCompatActivity activity, Date dateOfRace, Integer raceId){
         this.id = id;
         records = new ArrayList<>();
         this.activity = activity;
+        this.dateOfRace = dateOfRace;
+        this.raceId = raceId;
     }
 
     @Override
@@ -50,10 +56,18 @@ public class HorseRecordTask extends AsyncTask<String, String, String> {
                 raceDate.setTime(temp);
                 Calendar dateSelected = Calendar.getInstance();
                 dateSelected.setTime(temp);
-                dateSelected.set(Calendar.YEAR, dateOfSelectedRace.getYear());
-                dateSelected.set(Calendar.MONTH, dateOfSelectedRace.getMonth());
-                dateSelected.set(Calendar.DAY_OF_MONTH, dateOfSelectedRace.getDay());
-//                if (raceDate.compareTo(dateSelected) < 0) {
+                if(dateOfRace == null) {
+                    dateSelected.set(Calendar.YEAR, dateOfSelectedRace.getYear());
+                    dateSelected.set(Calendar.MONTH, dateOfSelectedRace.getMonth());
+                    dateSelected.set(Calendar.DAY_OF_MONTH, dateOfSelectedRace.getDay());
+                }else{
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(dateOfRace);
+                    dateSelected.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+                    dateSelected.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+                    dateSelected.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+                }
+                if (raceDate.compareTo(dateSelected) < 0) {
                     records.add(new Record(temp,
                             null,
                             jsonArray.getJSONObject(i).has("course_name") ? jsonArray.getJSONObject(i).getString("course_name") : "",
@@ -70,7 +84,7 @@ public class HorseRecordTask extends AsyncTask<String, String, String> {
                             jsonArray.getJSONObject(i).has("race_id") ? jsonArray.getJSONObject(i).getInt("race_id") : 0
                     ));
 //                    if(records.size() == 6)break;
-//                }
+                }
             }
 
         }catch (Exception e){
@@ -81,6 +95,11 @@ public class HorseRecordTask extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result){
-        activity.addHorseRecord(records, id);
+        if(activity instanceof  RaceActivity) {
+            ((RaceActivity) activity).addHorseRecord(records, id);
+        }
+        if(activity instanceof ChancesActivity) {
+            ((ChancesActivity) activity).addHorseRecord(records, id, dateOfRace, raceId);
+        }
     }
 }

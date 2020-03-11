@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".activities.horse.RaceDayEventsActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activities.horse.ChancesActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.horse.RaceCourseActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.horse.RaceActivity"

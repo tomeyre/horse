@@ -3,9 +3,10 @@ package com.example.horseracing.data.football;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Record implements Parcelable {
+public class Record implements Serializable {
 
     private String against;
     private String match_type;
@@ -28,17 +29,17 @@ public class Record implements Parcelable {
         winner = in.readString();
     }
 
-    public static final Creator<Record> CREATOR = new Creator<Record>() {
-        @Override
-        public Record createFromParcel(Parcel in) {
-            return new Record(in);
-        }
-
-        @Override
-        public Record[] newArray(int size) {
-            return new Record[size];
-        }
-    };
+//    public static final Creator<Record> CREATOR = new Creator<Record>() {
+//        @Override
+//        public Record createFromParcel(Parcel in) {
+//            return new Record(in);
+//        }
+//
+//        @Override
+//        public Record[] newArray(int size) {
+//            return new Record[size];
+//        }
+//    };
 
     public String getAgainst() {
         return against;
@@ -80,16 +81,16 @@ public class Record implements Parcelable {
         this.winner = winner;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(against);
-        parcel.writeString(match_type);
-        parcel.writeString(outcome);
-        parcel.writeString(winner);
-    }
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel parcel, int i) {
+//        parcel.writeString(against);
+//        parcel.writeString(match_type);
+//        parcel.writeString(outcome);
+//        parcel.writeString(winner);
+//    }
 }

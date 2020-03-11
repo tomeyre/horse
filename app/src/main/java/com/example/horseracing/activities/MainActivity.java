@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.example.horseracing.activities.football.FootballMatchesByDayActivity;
 import com.example.horseracing.activities.horse.RaceDayEventsActivity;
 import com.example.horseracing.R;
+import com.example.horseracing.asyncTasks.football.Ranking;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         football.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new Ranking().execute();
                 Intent intent = new Intent(MainActivity.this, FootballMatchesByDayActivity.class);
                 startActivity(intent);
             }

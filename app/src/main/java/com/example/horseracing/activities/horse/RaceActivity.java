@@ -53,7 +53,7 @@ public class RaceActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         if(id != null) {
-            new RaceParticipantTask(id, this).execute();
+            new RaceParticipantTask(id, this, null).execute();
         }
 
     }
@@ -63,13 +63,13 @@ public class RaceActivity extends AppCompatActivity {
         recordsObtained = 0;
         for(RaceParticipant participant : raceParticipants){
             if(participant.getHorse() != null && participant.getHorse().getId() != null) {
-                new HorseRecordTask(participant.getHorse().getId(), this).execute();
-                new JockeyRecordTask(participant.getJockey().getId(), this).execute();
-                new TrainerRecordTask(participant.getTrainer().getId(), this).execute();
+                new HorseRecordTask(participant.getHorse().getId(), this, null, null).execute();
+                new JockeyRecordTask(participant.getJockey().getId(), this, null, null).execute();
+                new TrainerRecordTask(participant.getTrainer().getId(), this, null, null).execute();
             }else{
-                new HorseRecordTask(0, this).execute();
-                new JockeyRecordTask(0, this).execute();
-                new TrainerRecordTask(0, this).execute();
+                new HorseRecordTask(0, this, null, null).execute();
+                new JockeyRecordTask(0, this, null, null).execute();
+                new TrainerRecordTask(0, this, null, null).execute();
             }
         }
 
@@ -190,19 +190,19 @@ public class RaceActivity extends AppCompatActivity {
         System.out.println("-----------------------------------");
         score += calculationUtil.hasTheHorseWonAnyOfTheirLastRaces(participant);
         score += calculationUtil.hasTheHorseFinishedSecondInTheirLastRaces(participant);
-        score += calculationUtil.doesTheJockeyOftenWin(participant);
-        score += calculationUtil.doesTheTrainerTrainWinningHorses(participant);
+            score += calculationUtil.doesTheJockeyOftenWin(participant);
+            score += calculationUtil.doesTheTrainerTrainWinningHorses(participant);
         score += calculationUtil.hasThisJokeyWonWithThisHorseBefore(participant);
         score += calculationUtil.hasTheHorseRacedInThisClassBeforeAndWon(participant);
         score += calculationUtil.hasTheHorseRacedWithThisWeightBeforeAndWon(participant);
-//        score += calculationUtil.isTheHorseReliable(participant);
-//        score += calculationUtil.isTheJockeyReliable(participant);
+        score += calculationUtil.isTheHorseReliable(participant);
+            score += calculationUtil.isTheJockeyReliable(participant);
         score += calculationUtil.isTheHorseComfortableAtThisDistance(participant);
-        score += calculationUtil.doesTheHorseFavourThisGround(participant);
+            score += calculationUtil.doesTheHorseFavourThisGround(participant);
         score += calculationUtil.hasTheLast6RacesBeenRecent(participant);
         score += calculationUtil.hasTheHorseMovedClass(participant);
-        score += calculationUtil.horseRatingBonus(raceParticipants,participant);
-        score -= calculationUtil.horseOdds(participant);
+        score += calculationUtil.horseRatingBonus(raceParticipants, participant);
+        score += calculationUtil.horseOdds(participant);
         System.out.println(participant.getHorse().getName() + " Overall score " + score + "-----------------------------------");
         return score;
     }

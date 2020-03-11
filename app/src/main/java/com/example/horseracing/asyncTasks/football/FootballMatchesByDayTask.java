@@ -18,19 +18,27 @@ import java.util.ArrayList;
 
 public class FootballMatchesByDayTask extends AsyncTask<String, String, String> {
 
-    private static final String url = "https://www.sportinglife.com/api/football/match_day?match_date=";
+    private static final String url = "https://www.sportinglife.com/api/football/competition/1/matches?from=";
+    private static final String to = "&to=";
+    private static final String resultsOnly = "&results_only=false";
 
     private Integer year;
     private Integer month;
     private Integer day;
+    private Integer prevYear;
+    private Integer prevMonth;
+    private Integer prevDay;
     private ArrayList<Match> matches;
     private FootballMatchesByDayActivity activity;
 
 
-    public FootballMatchesByDayTask(Integer year, Integer month, Integer day, FootballMatchesByDayActivity activity){
+    public FootballMatchesByDayTask(Integer year, Integer month, Integer day, Integer prevYear, Integer prevMonth, Integer prevDay, FootballMatchesByDayActivity activity) {
         this.year = year;
         this.month = month + 1;
         this.day = day;
+        this.prevYear = prevYear;
+        this.prevMonth = prevMonth + 1;
+        this.prevDay = prevDay;
         matches = new ArrayList<>();
         this.activity = activity;
     }
@@ -39,17 +47,16 @@ public class FootballMatchesByDayTask extends AsyncTask<String, String, String> 
     protected String doInBackground(String... strings) {
         try{
             HttpGet httpGet = new HttpGet();
-            String json = httpGet.getJSONFromUrl(url + year + "-" + month + "-" + day);
-            System.out.println(url + year + "-" + month + "-" + day);
+            String json = httpGet.getJSONFromUrl(url + prevYear + "-" + prevMonth + "-" + prevDay + to + year + "-" + month + "-" + day + resultsOnly);
+            System.out.println(url + prevYear + "-" + prevMonth + "-" + prevDay + to + year + "-" + month + "-" + day + resultsOnly);
 
             if(json == null){return null;}
 
-            JSONArray jsonArray = new JSONArray(json);
+            JSONArray jsonArray = new JSONObject(json).getJSONArray("match");
 
             for(int i = 0; i < jsonArray.length(); i++){
                 matches.add(new Match(jsonArray.getJSONObject(i).getJSONObject("match_reference").getInt("id"),
                         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(jsonArray.getJSONObject(i).getString("match_date")),
-                        jsonArray.getJSONObject(i).getJSONObject("competition").getString("name"),
                         buildTeam(jsonArray.getJSONObject(i).getJSONObject("team_score_a")),
                         buildTeam(jsonArray.getJSONObject(i).getJSONObject("team_score_b"))));
             }

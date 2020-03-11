@@ -1,7 +1,9 @@
 package com.example.horseracing.asyncTasks.horse;
 
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 
+import com.example.horseracing.activities.horse.ChancesActivity;
 import com.example.horseracing.activities.horse.RaceActivity;
 import com.example.horseracing.data.horse.DateOfSelectedRace;
 import com.example.horseracing.data.horse.Record;
@@ -18,15 +20,19 @@ import java.util.Date;
 public class JockeyRecordTask extends AsyncTask<String, String, String> {
 
     private Integer id;
-    private RaceActivity activity;
+    private AppCompatActivity activity;
     private ArrayList<Record> records;
     private String url = "https://www.sportinglife.com/api/horse-racing/jockey/";
     private DateOfSelectedRace dateOfSelectedRace = DateOfSelectedRace.getInstance();
+    private Date dateOfRace;
+    private Integer raceId;
 
-    public JockeyRecordTask(Integer id, RaceActivity activity){
+    public JockeyRecordTask(Integer id, AppCompatActivity activity, Date dateOfRace, Integer raceId){
         this.id = id;
         this.activity = activity;
         records = new ArrayList<>();
+        this.dateOfRace = dateOfRace;
+        this.raceId = raceId;
     }
 
     @Override
@@ -45,16 +51,24 @@ public class JockeyRecordTask extends AsyncTask<String, String, String> {
 
             for(int i = 0; i < jsonArray.length(); i++) {
                 Date temp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
-                        (jsonArray.getJSONObject(i).has("date") ? jsonArray.getJSONObject(i).getString("date") : "2900-01-01") + " " +
-                                (jsonArray.getJSONObject(i).has("time") ? jsonArray.getJSONObject(i).getString("time") : "00:00:00"));
+                        (jsonArray.getJSONObject(i).getJSONObject("horse_entry").has("date") ? jsonArray.getJSONObject(i).getJSONObject("horse_entry").getString("date") : "2900-01-01") + " " +
+                                (jsonArray.getJSONObject(i).getJSONObject("horse_entry").has("time") ? jsonArray.getJSONObject(i).getJSONObject("horse_entry").getString("time") : "00:00:00"));
                 Calendar raceDate = Calendar.getInstance();
                 raceDate.setTime(temp);
                 Calendar dateSelected = Calendar.getInstance();
                 dateSelected.setTime(temp);
-                dateSelected.set(Calendar.YEAR, dateOfSelectedRace.getYear());
-                dateSelected.set(Calendar.MONTH, dateOfSelectedRace.getMonth());
-                dateSelected.set(Calendar.DAY_OF_MONTH, dateOfSelectedRace.getDay());
-//                if (raceDate.compareTo(dateSelected) < 0) {
+                if(dateOfRace == null) {
+                    dateSelected.set(Calendar.YEAR, dateOfSelectedRace.getYear());
+                    dateSelected.set(Calendar.MONTH, dateOfSelectedRace.getMonth());
+                    dateSelected.set(Calendar.DAY_OF_MONTH, dateOfSelectedRace.getDay());
+                }else{
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(dateOfRace);
+                    dateSelected.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+                    dateSelected.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+                    dateSelected.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+                }
+                if (raceDate.compareTo(dateSelected) < 0) {
                     records.add(new Record(
                             temp,
                             jsonArray.getJSONObject(i).getJSONObject("horse_summary").has("name") ? jsonArray.getJSONObject(i).getJSONObject("horse_summary").getString("name") : "",
@@ -72,7 +86,7 @@ public class JockeyRecordTask extends AsyncTask<String, String, String> {
                             jsonArray.getJSONObject(i).getJSONObject("horse_entry").has("race_id") ? jsonArray.getJSONObject(i).getJSONObject("horse_entry").getInt("race_id") : 0
                     ));
 //                    if(records.size() == 6)break;
-//                }
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -82,6 +96,11 @@ public class JockeyRecordTask extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        activity.addJockeyRecord(records, id);
+        if(activity instanceof  RaceActivity) {
+            ((RaceActivity) activity).addJockeyRecord(records, id);
+        }
+        if(activity instanceof ChancesActivity) {
+            ((ChancesActivity) activity).addJockeyRecord(records, id, dateOfRace, raceId);
+        }
     }
 }

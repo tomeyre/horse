@@ -1,6 +1,7 @@
 package com.example.horseracing.data.horse;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class RaceCourse implements Serializable {
@@ -13,6 +14,7 @@ public class RaceCourse implements Serializable {
     private String going;
     private boolean isHandicaped;
     private Integer raceReference;
+    private ArrayList<RaceParticipant> horsesRacing = new ArrayList<>();
 
     public RaceCourse(String location, Date date, String raceClass, String distance,
                       int totalRiders, String going, boolean isHandicaped,
@@ -25,6 +27,14 @@ public class RaceCourse implements Serializable {
         this.going = going;
         this.isHandicaped = isHandicaped;
         this.raceReference = raceReference;
+    }
+
+    public ArrayList<RaceParticipant> getHorsesRacing() {
+        return horsesRacing;
+    }
+
+    public void setHorsesRacing(ArrayList<RaceParticipant> horsesRacing) {
+        this.horsesRacing = horsesRacing;
     }
 
     public String getLocation() {

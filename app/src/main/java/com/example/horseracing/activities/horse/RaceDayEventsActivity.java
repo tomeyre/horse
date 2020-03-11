@@ -1,5 +1,6 @@
 package com.example.horseracing.activities.horse;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ public class RaceDayEventsActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private DatePicker datePicker;
     private Button changeDateButton;
+    private Button chances;
     private DateOfSelectedRace dateOfSelectedRace = DateOfSelectedRace.getInstance();
 
     @Override
@@ -39,6 +41,14 @@ public class RaceDayEventsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 updateData(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+            }
+        });
+        chances = findViewById(R.id.chances);
+        chances.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RaceDayEventsActivity.this, ChancesActivity.class);
+                RaceDayEventsActivity.this.startActivity(intent);
             }
         });
 
